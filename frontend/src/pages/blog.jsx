@@ -7,7 +7,7 @@ function Grounds() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3001/grounds")
+    fetch("https://sports-vvki.onrender.com/grounds")
       .then(res => res.json())
       .then(data => {
         console.log("Fetched data:", data);

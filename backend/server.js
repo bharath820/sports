@@ -8,6 +8,11 @@ const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 
 
+app.use(cors({
+    origin: ['https://sports-theta-seven.vercel.app','http://localhost:3000'],
+    credentials: true
+}));
+
 
 const User=require("./Models/user");
 const { default: connectDB } = require("./config/connectDB");

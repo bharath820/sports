@@ -29,7 +29,7 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/user", {
+      const response = await axios.post("https://sports-vvki.onrender.com/user", {
         name,
         email,
         password,
