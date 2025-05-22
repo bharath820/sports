@@ -8,13 +8,9 @@ const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 
 
-app.use(cors({
-    origin: ['https://sports-theta-seven.vercel.app','http://localhost:3000'],
-    credentials: true
-}));
 
 
-console.log("CORS enabled for specific origins");
+
 const User=require("./Models/user");
 const { default: connectDB } = require("./config/connectDB");
 const { default: sportModel } = require("./Models/Grounds");
@@ -36,6 +32,12 @@ app.use(bodyParser.raw({ type: 'application/json' })); // ✅ Needed for Stripe 
 require("dotenv").config();
 
 
+app.use(cors({
+    origin: ['https://sports-theta-seven.vercel.app','http://localhost:3000'],
+    credentials: true
+}));
+
+console.log("CORS enabled for specific origins");
 
 //loginn mongoose 
 
