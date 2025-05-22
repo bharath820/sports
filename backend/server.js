@@ -14,6 +14,7 @@ app.use(cors({
 }));
 
 
+console.log("CORS enabled for specific origins");
 const User=require("./Models/user");
 const { default: connectDB } = require("./config/connectDB");
 const { default: sportModel } = require("./Models/Grounds");
