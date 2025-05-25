@@ -90,7 +90,7 @@ const handleLogin = async () => {
 
         <button
           onClick={handleLogin}
-          className="btn btn-primary btn-block w-100"
+          className="btn btn-dark btn-block w-100"
           disabled={isLoading}
         >
           {isLoading ? "Logging in..." : "Login"}
