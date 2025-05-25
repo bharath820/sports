@@ -16,13 +16,13 @@ const CustomNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userEmail");
-    navigate('/login');
+    navigate('/');
   };
   const handleProfile = () => navigate('/profile');
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg" fixed="top" className="shadow-sm py-3">
+      <Navbar bg="white" variant="dark" expand="lg" fixed="top" className="shadow-sm py-3">
         <Container className="d-flex align-items-center">
           {/* Brand */}
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-2">
@@ -35,17 +35,17 @@ const CustomNavbar = () => {
               style={{ objectFit: 'cover' }}
             />
             <span className="fw-bold text-warning">MANCHESTER</span>
-            <span className="fw-light text-white">Sports Club</span>
+            <span className="fw-light text-dark">Sports Club</span>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="navbar-nav" className="border-0" />
 
           <Navbar.Collapse id="navbar-nav">
             <Nav className="ms-auto align-items-center gap-3">
-              <Nav.Link as={Link} to="/" className="text-uppercase fw-semibold text-white">Home</Nav.Link>
-              <Nav.Link as={Link} to="/about" className="text-uppercase fw-semibold text-white">About</Nav.Link>
-              <Nav.Link as={Link} to="/services" className="text-uppercase fw-semibold text-white">Services</Nav.Link>
-              <Nav.Link as={Link} to="/contact" className="text-uppercase fw-semibold text-white">Contact</Nav.Link>
+              <Nav.Link as={Link} to="/" className="text-uppercase fw-semibold text-dark">Home</Nav.Link>
+              <Nav.Link as={Link} to="/about" className="text-uppercase fw-semibold text-dark">About</Nav.Link>
+              <Nav.Link as={Link} to="/services" className="text-uppercase fw-semibold text-dark">Services</Nav.Link>
+              <Nav.Link as={Link} to="/contact" className="text-uppercase fw-semibold text-dark">Contact</Nav.Link>
 
               {isLoggedIn ? (
                 <>
@@ -58,7 +58,7 @@ const CustomNavbar = () => {
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="btn btn-sm btn-outline-light rounded-pill px-3 fw-semibold"
+                    className="btn btn-sm btn-outline-dark rounded-pill px-3 fw-semibold text-dark"
                   >
                     Logout
                   </button>

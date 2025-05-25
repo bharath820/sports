@@ -17,9 +17,14 @@ function Grounds() {
   }, []);
 
   const handleCardClick = (groundname) => {
-    navigate(`/services/${groundname}`)
-  };
+    const isLoggedIn = localStorage.getItem("userEmail"); // replace with your actual logic
 
+  if (isLoggedIn) {
+    navigate("/dashboard", { state: { groundname } });
+  } else {
+    navigate("/register");
+  }
+};
   
   return (
     <div className="container my-4">
@@ -47,7 +52,7 @@ function Grounds() {
                 <p className="card-text text-center">{ground.text}</p>
                 <div className="card-footer bg-transparent border-0 text-center">
           <button
-            className="btn btn-primary w-75"
+            className="btn btn-dark w-75"
             onClick={() => handleCardClick(ground.name)}
           >
             Book Now

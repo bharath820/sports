@@ -20,6 +20,7 @@ const { default: sportModel3 } = require("./Models/basketball");
 const { default: sportModel4 } = require("./Models/hockey");  
 const { default: sportModel5 } = require("./Models/tennis");
 const { default: sportModel6 } = require("./Models/volleyball");
+const Booking = require("./Models/booking");
 
 
 const port = process.env.PORT || 3001;
@@ -261,13 +262,93 @@ app.get("/volleyball", async (req, res) => {
 
 
 
+
+//Mails to users
+
+
+app.post("/send-email", async (req, res) => {
+  const { email, username, groundName, sport, date, slot } = req.body;
+
+  const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  auth: {
+    user: process.env.ADMIN_EMAIL,
+    pass: process.env.EMAIL_PASS,
+  }
+});
+
+  const mailOptions = {
+    from: process.env.ADMIN_EMAIL,
+    to: email,
+    subject: "Sports Ground Booking Confirmation",
+    html: `
+      <h3>Hello ${username},</h3>
+      <p>Thank you for booking with us!</p>
+      <p><strong>Ground:</strong> ${groundName}</p>
+      <p><strong>Sport:</strong> ${sport}</p>
+      <p><strong>Date:</strong> ${date}</p>
+      <p><strong>Slot:</strong> ${slot}</p>
+      <br/>
+      <p>Regards,<br/>Sports Booking Team</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error("Email send error:", error);
+    res.status(500).json({ message: "Failed to send email" });
+  }
+});
+
+
+//getting data from booking to show history from user 
+
+
+app.get('/profile/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const bookings = await Booking.find({ email }); // returns an array
+    if (bookings.length === 0) {
+      return res.status(200).json({ message: "No bookings found", bookings: [] });
+    }
+
+    res.status(200).json({ bookings });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+
+
+
+
+//save Booking endpoint
+
+app.post("/booking", async (req, res) => {
+  try {
+    const bookingData = req.body;
+    const booking = new Booking(bookingData);
+    await booking.save();
+    res.status(201).json({ message: "Booking saved successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to save booking" });
+  }
+});
+
+
+
+
 //Feedback mails 
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    pass: process.env.EMAIL_PASS,
   }
 });
 
@@ -284,13 +365,13 @@ app.post('/api/feedback', async (req, res) => {
     }
 
     // Admin email (where all feedback will be sent)
-    const adminEmail = process.env.ADMIN_EMAIL;
+  
 
     // Email content
     const mailOptions = {
       from: `"Feedback System" <${process.env.EMAIL_USER}>`,
-      to: user.email,
-      subject: `New Feedback: ${subject}`,
+      to: process.env.ADMIN_EMAIL, // Admin email
+      subject: `Feedback: ${subject}`,
       html: `
         <h2 style="color: #ff6b00;">New Feedback Received</h2>
         <table style="width: 100%; border-collapse: collapse;">

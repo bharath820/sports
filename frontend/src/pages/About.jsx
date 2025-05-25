@@ -63,7 +63,7 @@ const About = () => {
                 </li>
               ))}
             </ul>
-            <button className="btn btn-primary mt-4 px-4 py-2" onClick={handleBookingClick}>
+            <button className="btn btn-dark mt-4 px-4 py-2" onClick={handleBookingClick}>
               Book Now
             </button>
           </div>

@@ -1,100 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const [editedUser, setEditedUser] = useState({
-    name: '',
-    email: '',
-    bio: '',
-    phone: '',
-    profilePic: ''
-  });
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const email = localStorage.getItem('userEmail');
 
   useEffect(() => {
-    // Fetch user data from localStorage or API
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      setUser(userData);
-      setEditedUser(userData); // Initialize edited user data with current user data
+    const fetchBookings = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/profile/${email}`);
+        setBookings(response.data.bookings || []);
+      } catch (err) {
+        console.error('Error fetching bookings:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (email) {
+      fetchBookings();
+    } else {
+      setLoading(false);
     }
-  }, []);
+  }, [email]);
 
-  // Handle changes in input fields
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedUser((prevState) => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+  if (loading) return <div className="container mt-5">Loading...</div>;
 
-  const handleProfileUpdate = () => {
-    // Save the updated data in localStorage (or make an API call to update on the server)
-    localStorage.setItem("user", JSON.stringify(editedUser));
-    setUser(editedUser); // Update user state with edited values
-    alert("Profile updated successfully!");
-  };
+  if (!email) {
+    return <div className="container mt-5">You are not logged in.</div>;
+  }
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = '/login';
-  };
-
-  if (!user) {
-    return <div>Loading...</div>;
+  if (bookings.length === 0) {
+    return <div className="container mt-5">You haven’t booked any sports yet.</div>;
   }
 
   return (
-    <div className="profile">
-      <h1>{user.name}'s Profile</h1>
-      <img src={user.profilePic} alt="Profile" />
-      <div>
-        <label>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={editedUser.name}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={editedUser.email}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Bio:</label>
-        <textarea
-          name="bio"
-          value={editedUser.bio}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Phone:</label>
-        <input
-          type="text"
-          name="phone"
-          value={editedUser.phone}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Profile Picture (URL):</label>
-        <input
-          type="text"
-          name="profilePic"
-          value={editedUser.profilePic}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <button onClick={handleProfileUpdate}>Save Changes</button>
-      <button onClick={handleLogout}>Logout</button>
+    <div className="container mt-5">
+      <h2 className="mb-4">Your Bookings</h2>
+      {bookings.map((booking, index) => (
+        <div key={index} className="card mb-3 shadow-sm">
+          <div className="card-body">
+            <p><strong>Ground:</strong> {booking.groundName}</p>
+            <p><strong>Sport:</strong> {booking.sport}</p>
+            <p><strong>Date:</strong> {new Date(booking.date).toDateString()}</p>
+            <p><strong>Slot:</strong> {booking.slot}</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

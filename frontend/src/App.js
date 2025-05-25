@@ -13,12 +13,14 @@ import Land from "./Landpage/Landpage.jsx";
 import Register from "./Landpage/Register.jsx";
 import Login from "./Landpage/Login.jsx";
 import Profile from "./pages/Profile.jsx";
+// import Grounds from "./pages/sportgrounds.jsx"
+import Dashboard from "./pages/dashboard.jsx"
+import Grounddetails from "./pages/grounddetails.jsx"
+import Form from "./pages/form.jsx"
 
 
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe("pk_test_51RJBcV2SU9vnUGmhtxUrgYl5vnvL2wjkxdMu3Pm5AvG03oU8asYJT6FsQRhA4btjXYA7nfgrTFJlWtAw0F76w9qk003JSEt1QC");
+
 
 const Layout = () => {
   const location = useLocation();
@@ -38,6 +40,10 @@ const Layout = () => {
         <Route path="/register" element={<div className="pt-5"><Register /></div>} />
         <Route path="/login" element={<div className="pt-5"><Login /></div>} />
         <Route path="/profile" element={<div className="pt-5"><Profile /></div>} />
+         {/* <Route path="/services/:groundname" element={<Grounds />} /> */}
+         <Route path="/dashboard" element={<Dashboard />} />
+         <Route path="/ground/:id" element={<Grounddetails />} />
+         <Route path="/form" element={<Form />} />
       </Routes>
       {!shouldHideLayout && <Footer />}
     </>
