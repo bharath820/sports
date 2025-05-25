@@ -11,13 +11,13 @@ const reviews = [
     text: `We booked Sunrise Arena for our weekend tournament and were amazed by how well-maintained the ground was. The online booking process was super easy, and the staff on-site were extremely helpful. We'll definitely use GroundBooking again for our future events.""`
   },
   {
-    name: "Arjun Patel",
+    name: "Priya Sharma",
     role: "Manager, Greenfield Ground",
     image: Review2,
     text: `"Ground management was smooth and hassle-free. The facility is well-maintained, and communication with the staff was great throughout."`
   },
   {
-    name: "Priya Sharma",
+    name: "Arjun Patel",
     role: "Event Coordinator, Sunrise Arena",
     image: Review3,
     text: `"Excellent experience managing our sports events here. The infrastructure is top-notch and the support team was very cooperative."`

@@ -22,7 +22,7 @@ const Contact = () => {
     };
 
     try {
-      const response = await axios.post('https://sports-vvki.onrender.com/api/feedback', formData);
+      const response = await axios.post('https://sports-theta-seven.vercel.app/feedback', formData);
       
       toast.success("🎉 Thank you for your feedback! We've received your message.", {
         position: "top-center",

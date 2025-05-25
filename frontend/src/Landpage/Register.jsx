@@ -29,7 +29,7 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post("https://sports-vvki.onrender.com/user", {
+      const response = await axios.post("https://sports-theta-seven.vercel.app/user", {
         name,
         email,
         password,

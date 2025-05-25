@@ -38,7 +38,7 @@ const BookingForm = () => {
       });
 
       // 2. Store booking in MongoDB
-      await axios.post("http://localhost:3001/booking", {
+      await axios.post("https://sports-theta-seven.vercel.app/booking", {
         email,
         username,
         groundName: ground?.name,

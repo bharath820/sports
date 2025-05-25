@@ -15,7 +15,7 @@ const Dashboard = () => {
     setSelectedSport(sport);
     setLoading(true);
     try {
-      const response = await axios.get(`https://sports-vvki.onrender.com/${sport.toLowerCase()}`);
+      const response = await axios.get(`https://sports-theta-seven.vercel.app/${sport.toLowerCase()}`);
       setGrounds(response.data.data || []);
     } catch (error) {
       console.error('Failed to fetch grounds:', error);

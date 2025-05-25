@@ -22,9 +22,8 @@ const CustomNavbar = () => {
 
   return (
     <>
-      <Navbar bg="white" variant="dark" expand="lg" fixed="top" className="shadow-sm py-3">
-        <Container className="d-flex align-items-center">
-          {/* Brand */}
+      <Navbar bg="dark" variant="dark" expand="lg" fixed="top" className="shadow-sm py-3">
+        <Container>
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-2">
             <img 
               src={Logo}
@@ -35,17 +34,17 @@ const CustomNavbar = () => {
               style={{ objectFit: 'cover' }}
             />
             <span className="fw-bold text-warning">MANCHESTER</span>
-            <span className="fw-light text-dark">Sports Club</span>
+            <span className="fw-light text-light">Sports Club</span>
           </Navbar.Brand>
 
-          <Navbar.Toggle aria-controls="navbar-nav" className="border-0" />
+          <Navbar.Toggle aria-controls="navbar-nav" />
 
           <Navbar.Collapse id="navbar-nav">
-            <Nav className="ms-auto align-items-center gap-3">
-              <Nav.Link as={Link} to="/" className="text-uppercase fw-semibold text-dark">Home</Nav.Link>
-              <Nav.Link as={Link} to="/about" className="text-uppercase fw-semibold text-dark">About</Nav.Link>
-              <Nav.Link as={Link} to="/services" className="text-uppercase fw-semibold text-dark">Services</Nav.Link>
-              <Nav.Link as={Link} to="/contact" className="text-uppercase fw-semibold text-dark">Contact</Nav.Link>
+            <Nav className="ms-auto align-items-lg-center flex-column flex-lg-row gap-3">
+              <Nav.Link as={Link} to="/" className="text-uppercase fw-semibold text-light">Home</Nav.Link>
+              <Nav.Link as={Link} to="/about" className="text-uppercase fw-semibold text-light">About</Nav.Link>
+              <Nav.Link as={Link} to="/services" className="text-uppercase fw-semibold text-light">Services</Nav.Link>
+              <Nav.Link as={Link} to="/contact" className="text-uppercase fw-semibold text-light">Contact</Nav.Link>
 
               {isLoggedIn ? (
                 <>
@@ -58,7 +57,7 @@ const CustomNavbar = () => {
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="btn btn-sm btn-outline-dark rounded-pill px-3 fw-semibold text-dark"
+                    className="btn btn-sm btn-outline-light rounded-pill px-3 fw-semibold text-light"
                   >
                     Logout
                   </button>
@@ -76,8 +75,7 @@ const CustomNavbar = () => {
         </Container>
       </Navbar>
 
-      {/* Offset to avoid overlap due to fixed top */}
-      <div style={{ paddingTop: '65px' }} />
+      <div style={{ paddingTop: '80px' }} />
     </>
   );
 };

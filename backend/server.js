@@ -34,7 +34,7 @@ require("dotenv").config();
 
 
 app.use(cors({
-    origin: ['https://sports-theta-seven.vercel.app','http://localhost:3000'],
+    origin: ['https://sports-theta-seven.vercel.app/','http://localhost:3000'],
     credentials: true
 }));
 
@@ -353,7 +353,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Feedback endpoint
-app.post('/api/feedback', async (req, res) => {
+app.post('/feedback', async (req, res) => {
   try {
     const data = req.body;
     console.log("Received feedback:", data);

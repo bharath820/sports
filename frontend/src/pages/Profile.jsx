@@ -9,7 +9,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/profile/${email}`);
+        const response = await axios.get(`https://sports-theta-seven.vercel.app/profile/${email}`);
         setBookings(response.data.bookings || []);
       } catch (err) {
         console.error('Error fetching bookings:', err);
