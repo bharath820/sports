@@ -36,7 +36,7 @@ const { sport, selectedSport } = location.state || {};
   useEffect(() => {
     if (!groundFromNav) {
       axios
-        .get(`https://sports-theta-seven.vercel.app/ground/${id}`)
+        .get(`https://sports-vvki.onrender.com/ground/${id}`)
         .then((res) => setGround(res.data.data))
         .catch(() => setError("Failed to load ground details."))
         .finally(() => setLoading(false));

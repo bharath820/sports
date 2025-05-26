@@ -29,7 +29,7 @@ const handleLogin = async () => {
   setError("");
 
   try {
-    const response = await fetch("https://sports-theta-seven.vercel.app/login", {
+    const response = await fetch("https://sports-vvki.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

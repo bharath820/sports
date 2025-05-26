@@ -7,7 +7,7 @@ function Grounds() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://sports-theta-seven.vercel.app/grounds")
+    fetch("https://sports-vvki.onrender.com/grounds")
       .then(res => res.json())
       .then(data => {
         console.log("Fetched data:", data);
