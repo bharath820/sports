@@ -22,7 +22,7 @@ const CustomNavbar = () => {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg" fixed="top" className="shadow-sm py-3">
+      <Navbar  bg="dark"variant="dark" expand="lg" fixed="top" className="shadow-sm py-3">
         <Container>
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-2">
             <img 
@@ -39,8 +39,9 @@ const CustomNavbar = () => {
 
           <Navbar.Toggle aria-controls="navbar-nav" />
 
-          <Navbar.Collapse id="navbar-nav">
-            <Nav className="ms-auto align-items-lg-center flex-column flex-lg-row gap-3">
+          <Navbar.Collapse id="navbar-nav" >
+           <Nav className="ms-auto align-items-center flex-column flex-sm-row gap-2 gap-lg-4 text-center text-lg-start width-600">
+
               <Nav.Link as={Link} to="/" className="text-uppercase fw-semibold text-light">Home</Nav.Link>
               <Nav.Link as={Link} to="/about" className="text-uppercase fw-semibold text-light">About</Nav.Link>
               <Nav.Link as={Link} to="/services" className="text-uppercase fw-semibold text-light">Services</Nav.Link>
@@ -67,7 +68,7 @@ const CustomNavbar = () => {
                   onClick={handleSignIn}
                   className="btn btn-sm btn-outline-warning rounded-pill px-3 fw-semibold"
                 >
-                  Sign In
+                  Login In
                 </button>
               )}
             </Nav>
