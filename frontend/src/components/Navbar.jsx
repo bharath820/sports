@@ -3,7 +3,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Logo from "../Assetss/main logo.png";
+import Logo from "../Assetss/reviews/final-logo.jpg";
 
 const CustomNavbar = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const CustomNavbar = () => {
               src={Logo}
               alt="Logo"
               height="100"
-              width="100"
+              width="70"
               className="rounded-circle"
               style={{ objectFit: 'cover' }}
             />

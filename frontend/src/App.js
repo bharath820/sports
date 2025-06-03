@@ -16,7 +16,7 @@ import Profile from "./pages/Profile.jsx";
 // import Grounds from "./pages/sportgrounds.jsx"
 import Dashboard from "./pages/dashboard.jsx"
 import Grounddetails from "./pages/grounddetails.jsx"
-import Form from "./pages/form.jsx"
+import BookingForm from "./pages/form.jsx"
 
 
 
@@ -40,10 +40,9 @@ const Layout = () => {
         <Route path="/register" element={<div className="pt-5"><Register /></div>} />
         <Route path="/login" element={<div className="pt-5"><Login /></div>} />
         <Route path="/profile" element={<div className="pt-5"><Profile /></div>} />
-         {/* <Route path="/services/:groundname" element={<Grounds />} /> */}
          <Route path="/dashboard" element={<Dashboard />} />
          <Route path="/ground/:id" element={<Grounddetails />} />
-         <Route path="/form" element={<Form />} />
+         <Route path="/form" element={<BookingForm />}/>
       </Routes>
       {!shouldHideLayout && <Footer />}
     </>

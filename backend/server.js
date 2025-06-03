@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
@@ -12,15 +13,20 @@ const mongoose = require("mongoose");
 
 
 const User=require("./Models/user");
-const { default: connectDB } = require("./config/connectDB");
-const { default: sportModel } = require("./Models/Grounds");
-const {default: sportModel1}=require("./Models/cricket")
-const { default: sportModel2 } = require("./Models/badminton");
-const { default: sportModel3 } = require("./Models/basketball");
-const { default: sportModel4 } = require("./Models/hockey");  
-const { default: sportModel5 } = require("./Models/tennis");
-const { default: sportModel6 } = require("./Models/volleyball");
+const { default: connectDB } = require("./config/connectDB.js");
+const { default: sportModel } = require("./Models/Grounds.js");
+const {default: sportModel1}=require("./Models/cricket.js")
+const { default: sportModel2 } = require("./Models/badminton.js");
+const { default: sportModel3 } = require("./Models/basketball.js");
+const { default: sportModel4 } = require("./Models/hockey.js");  
+const { default: sportModel5 } = require("./Models/tennis.js");
+const { default: sportModel6 } = require("./Models/volleyball.js");
 const Booking = require("./Models/booking");
+
+const Feedback = require("./Models/feedback");
+
+
+// Initialize environment variables
 
 
 const port = process.env.PORT || 3001;
@@ -40,34 +46,27 @@ app.use(cors({
 
 console.log("CORS enabled for specific origins");
 
+
+
 //loginn mongoose 
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   try {
-    
     const user = await User.findOne({ email });
+    if (!user) return res.status(401).json({ success: false, message: "Invalid email or password" });
 
-    if (!user) {
-      return res.status(401).json({ success: false, message: "Invalid email or password" });
-    }
-
-    // Compare password with hashed password
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (isMatch) {
       return res.status(200).json({ success: true });
     } else {
       return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
-
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: "Server error" });
   }
 });
-
 
 
 // ✅ Registration route
@@ -75,58 +74,25 @@ app.post("/login", async (req, res) => {
 app.post("/user", async (req, res) => {
   const { name, email, password } = req.body;
 
-  // Validate input
   if (!name || !email || !password) {
     return res.status(400).json({ success: false, message: "All fields are required." });
   }
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ success: false, message: "Email already registered." });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Save the new user
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword
-    });
-console.log(newUser);
+    const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
     return res.json({ success: true, message: "Registered successfully" });
-
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-
-
-
-// mongodb
-
-app.get("/grounds", async (req, res) => {
-  console.log("Fetching grounds...");
-  try {
-    const grounds = await sportModel.find();
-    res.status(200).json({
-      success: true,
-      message: "Grounds fetched successfully",
-      data: grounds
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch grounds",
-      error: error.message
-    });
   }
 });
 
@@ -264,44 +230,52 @@ app.get("/volleyball", async (req, res) => {
 
 
 //Mails to users
-
-
 app.post("/send-email", async (req, res) => {
   const { email, username, groundName, sport, date, slot } = req.body;
 
-  const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  auth: {
-    user: process.env.ADMIN_EMAIL,
-    pass: process.env.EMAIL_PASS,
+  // Validate input
+  if (!email || !username || !groundName || !sport || !date || !slot) {
+    return res.status(400).json({ message: "Missing required fields" });
   }
-});
-
-  const mailOptions = {
-    from: process.env.ADMIN_EMAIL,
-    to: email,
-    subject: "Sports Ground Booking Confirmation",
-    html: `
-      <h3>Hello ${username},</h3>
-      <p>Thank you for booking with us!</p>
-      <p><strong>Ground:</strong> ${groundName}</p>
-      <p><strong>Sport:</strong> ${sport}</p>
-      <p><strong>Date:</strong> ${date}</p>
-      <p><strong>Slot:</strong> ${slot}</p>
-      <br/>
-      <p>Regards,<br/>Sports Booking Team</p>
-    `,
-  };
 
   try {
+    if (!process.env.ADMIN_EMAIL || !process.env.EMAIL_PASS) {
+      console.error("Missing email environment variables.");
+      return res.status(500).json({ message: "Server email config error" });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.ADMIN_EMAIL,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"Sports Booking Team" <${process.env.ADMIN_EMAIL}>`,
+      to: email,
+      subject: "Sports Ground Booking Confirmation",
+      html: `
+        <h3>Hello ${username},</h3>
+        <p>Thank you for booking with us!</p>
+        <p><strong>Ground:</strong> ${groundName}</p>
+        <p><strong>Sport:</strong> ${sport}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Slot:</strong> ${slot}</p>
+        <br/>
+        <p>Regards,<br/>Sports Booking Team</p>
+      `,
+    };
+
     await transporter.sendMail(mailOptions);
+
     res.status(200).json({ message: "Email sent successfully" });
   } catch (error) {
-    console.error("Email send error:", error);
-    res.status(500).json({ message: "Failed to send email" });
+    console.error("Email send error:", error.message);
+    res.status(500).json({ message: "Failed to send email", error: error.message });
   }
 });
-
 
 //getting data from booking to show history from user 
 
@@ -341,85 +315,63 @@ app.post("/booking", async (req, res) => {
 
 
 
+// Getting data from booking because of slots booking show 
 
-//Feedback mails 
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  }
-});
+// app.get("/booking", async(req,res)=>{
+//   const (date,slot)=
+// })
 
-// Feedback endpoint
+// Assuming you have imported express, set up app, and Feedback is your Mongoose model
 app.post('/feedback', async (req, res) => {
   try {
-    const data = req.body;
-    console.log("Received feedback:", data);
-    const { name, email, phone, date, feedbackType, rating, subject, message } = req.body;
+    const {
+      name,
+      email,
+      phone = 'Not provided',
+      date,
+      feedbackType,
+      rating,
+      subject,
+      message,
+      consent,
+    } = req.body;
 
-    // Validate required fields
-    if (!name || !email || !date || !feedbackType || !rating || !subject || !message) {
-      return res.status(400).json({ error: 'All required fields must be filled' });
+    if (!name || !email || !date || !feedbackType || typeof rating === 'undefined' || !subject || !message || consent !== true) {
+      return res.status(400).json({ error: 'All required fields must be filled and consent must be given.' });
     }
 
-    // Admin email (where all feedback will be sent)
-  
+    const bookingDate = new Date(date);
+    if (isNaN(bookingDate.getTime())) {
+      return res.status(400).json({ error: 'Invalid date format.' });
+    }
 
-    // Email content
-    const mailOptions = {
-      from: `"Feedback System" <${process.env.EMAIL_USER}>`,
-      to: process.env.ADMIN_EMAIL, // Admin email
-      subject: `Feedback: ${subject}`,
-      html: `
-        <h2 style="color: #ff6b00;">New Feedback Received</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;"><strong>From:</strong></td>
-            <td style="padding: 8px; border: 1px solid #ddd;">${name} (${email})</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;"><strong>Phone:</strong></td>
-            <td style="padding: 8px; border: 1px solid #ddd;">${phone}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;"><strong>Booking Date:</strong></td>
-            <td style="padding: 8px; border: 1px solid #ddd;">${date}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;"><strong>Feedback Type:</strong></td>
-            <td style="padding: 8px; border: 1px solid #ddd;">${feedbackType}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;"><strong>Rating:</strong></td>
-            <td style="padding: 8px; border: 1px solid #ddd;">${rating}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;"><strong>Subject:</strong></td>
-            <td style="padding: 8px; border: 1px solid #ddd;">${subject}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;"><strong>Message:</strong></td>
-            <td style="padding: 8px; border: 1px solid #ddd;">${message.replace(/\n/g, '<br>')}</td>
-          </tr>
-        </table>
-        <p style="margin-top: 20px; color: #666;">
-          <small>This feedback was submitted on ${new Date().toLocaleString()}</small>
-        </p>
-      `,
-      replyTo: email // So admin can reply directly to the user
-    };
+    const numericRating = Number(rating);
+    if (isNaN(numericRating) || numericRating < 1 || numericRating > 5) {
+      return res.status(400).json({ error: 'Rating must be a number between 1 and 5.' });
+    }
 
-    // Send email
-    await transporter.sendMail(mailOptions);
-    
-    res.status(200).json({ message: 'Feedback sent successfully!' });
+    const feedback = new Feedback({
+      name,
+      email,
+      phone,
+      date: bookingDate,
+      feedbackType,
+      rating: numericRating,
+      subject,
+      message,
+      consent,
+    });
+
+    const savedFeedback = await feedback.save();
+
+    return res.status(200).json({ message: 'Feedback saved successfully.', data: savedFeedback });
   } catch (error) {
-    console.error('Error sending feedback:', error);
-    res.status(500).json({ error: 'Failed to send feedback' });
+    console.error('Error saving feedback:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // ✅ Start server
 connectDB().then(()=>{
