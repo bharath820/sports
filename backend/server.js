@@ -106,7 +106,7 @@ app.post("/user", async (req, res) => {
 app.get("/grounds", async (req, res) => {
   console.log("Fetching grounds grounds...");
   try {
-    const ground = await sportModel1.find();
+    const ground = await sportModel.find();
     res.status(200).json({
       success: true,
       message: " grounds fetched successfully",
