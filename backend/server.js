@@ -22,8 +22,7 @@ const { default: sportModel4 } = require("./Models/hockey.js");
 const { default: sportModel5 } = require("./Models/tennis.js");
 const { default: sportModel6 } = require("./Models/volleyball.js");
 const Booking = require("./Models/booking");
-
-const Feedback = require("./Models/feedback");
+const Feedback=require("./Models/feedback.js")
 
 
 // Initialize environment variables
@@ -342,62 +341,18 @@ app.post("/booking", async (req, res) => {
 
 
 
-// Getting data from booking because of slots booking show 
 
-
-// app.get("/booking", async(req,res)=>{
-//   const (date,slot)=
-// })
-
-// Assuming you have imported express, set up app, and Feedback is your Mongoose model
 app.post('/feedback', async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      phone = 'Not provided',
-      date,
-      feedbackType,
-      rating,
-      subject,
-      message,
-      consent,
-    } = req.body;
-
-    if (!name || !email || !date || !feedbackType || typeof rating === 'undefined' || !subject || !message || consent !== true) {
-      return res.status(400).json({ error: 'All required fields must be filled and consent must be given.' });
-    }
-
-    const bookingDate = new Date(date);
-    if (isNaN(bookingDate.getTime())) {
-      return res.status(400).json({ error: 'Invalid date format.' });
-    }
-
-    const numericRating = Number(rating);
-    if (isNaN(numericRating) || numericRating < 1 || numericRating > 5) {
-      return res.status(400).json({ error: 'Rating must be a number between 1 and 5.' });
-    }
-
-    const feedback = new Feedback({
-      name,
-      email,
-      phone,
-      date: bookingDate,
-      feedbackType,
-      rating: numericRating,
-      subject,
-      message,
-      consent,
-    });
-
-    const savedFeedback = await feedback.save();
-
-    return res.status(200).json({ message: 'Feedback saved successfully.', data: savedFeedback });
-  } catch (error) {
-    console.error('Error saving feedback:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    const feedback = new Feedback(req.body);
+    await feedback.save();
+    res.status(201).json({ message: 'Feedback submitted successfully' });
+  } catch (err) {
+    console.error('Error saving feedback:', err);
+    res.status(500).json({ error: 'Failed to save feedback' });
   }
 });
+
 
 
 // ✅ Start server

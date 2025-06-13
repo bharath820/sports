@@ -58,6 +58,43 @@ const handleLogin = async () => {
   setIsLoading(false);
 };
 
+const handleLoginGuest = async () => {
+  const guestEmail = "bharath@gmail.com"; // Replace with your actual guest email
+  const guestPassword = "123456";       // Replace with your actual guest password
+
+  setIsLoading(true);
+  setError("");
+
+  try {
+    const response = await fetch("https://sports-vvki.onrender.com/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: guestEmail, password: guestPassword }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userEmail", guestEmail);
+      toast.success("Guest login successful!");
+
+      const from = location.state?.from || "/";
+      setTimeout(() => {
+        navigate(from);
+      }, 1500);
+    } else {
+      toast.error(data.message || "Guest login failed.");
+    }
+  } catch (error) {
+    toast.error("An error occurred during guest login. Please try again.");
+  }
+
+  setIsLoading(false);
+};
+
 
   return (
     <div className="container-fluid d-flex justify-content-center align-items-center bg-dark" style={{ minHeight: "100vh" }}>
@@ -100,6 +137,9 @@ const handleLogin = async () => {
           <p className="text-dark">
             Don't have an account? <Link to="/register">Register</Link>
           </p>
+        </div>
+        <div className="mt-2 text-center">
+          <button onClick={handleLoginGuest} className="btn btn-outline-secondary w-100">Login asGuest</button>
         </div>
       </div>
 

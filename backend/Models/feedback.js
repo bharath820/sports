@@ -1,40 +1,51 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const feedbackSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true,
+    trim: true
   },
   phone: {
     type: String,
-    required: false
+    default: '',
+    trim: true
   },
   date: {
-    type: Date,
+    type: String, // You can use Date type too, but you're sending it as string
     required: true
   },
   feedbackType: {
     type: String,
+    enum: ['Complaint', 'Suggestion', 'Compliment', 'General Feedback'],
     required: true
   },
   rating: {
     type: Number,
+    min: 1,
+    max: 5,
     required: true
   },
   subject: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   message: {
     type: String,
+    required: true,
+    trim: true
+  },
+  consent: {
+    type: Boolean,
     required: true
   }
-}, { minimize: false });
+}, { timestamps: true });
 
-const FeedbackModel = mongoose.model('feedback', feedbackSchema);
-
-export default FeedbackModel;
+module.exports = mongoose.model('Feedback', feedbackSchema);
