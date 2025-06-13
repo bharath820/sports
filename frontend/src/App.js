@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./components/Home.jsx";
 import About from "./pages/About.jsx";
 import Service from "./pages/Services.jsx";
-import Book from "./pages/book.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/footer.jsx";
 import Contact from "./pages/contact.jsx";
@@ -13,7 +12,6 @@ import Land from "./Landpage/Landpage.jsx";
 import Register from "./Landpage/Register.jsx";
 import Login from "./Landpage/Login.jsx";
 import Profile from "./pages/Profile.jsx";
-// import Grounds from "./pages/sportgrounds.jsx"
 import Dashboard from "./pages/dashboard.jsx"
 import Grounddetails from "./pages/grounddetails.jsx"
 import BookingForm from "./pages/form.jsx"
@@ -34,7 +32,6 @@ const Layout = () => {
         <Route path="/" element={<div className="pt-5"><Home /></div>} />
         <Route path="/about" element={<div className="pt-5"><About /></div>} />
         <Route path="/services" element={<div className="pt-5"><Service /></div>} />
-        <Route path="/book" element={<div className="pt-5"><Book /></div>} />
         <Route path="/contact" element={<div className="pt-5"><Contact /></div>} />
         <Route path="/land" element={<div className="pt-5"><Land /></div>} />
         <Route path="/register" element={<div className="pt-5"><Register /></div>} />
