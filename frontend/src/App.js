@@ -15,6 +15,7 @@ import Profile from "./pages/Profile.jsx";
 import Dashboard from "./pages/dashboard.jsx"
 import Grounddetails from "./pages/grounddetails.jsx"
 import BookingForm from "./pages/form.jsx"
+import Loggins from './Landpage/Adminoruser.jsx'
 
 
 
@@ -40,6 +41,7 @@ const Layout = () => {
          <Route path="/dashboard" element={<Dashboard />} />
          <Route path="/ground/:id" element={<Grounddetails />} />
          <Route path="/form" element={<BookingForm />}/>
+         <Route path="/" element={<Loggins />} />
       </Routes>
       {!shouldHideLayout && <Footer />}
     </>

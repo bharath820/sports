@@ -59,6 +59,9 @@ const handleLogin = async () => {
   setIsLoading(false);
 };
 
+const handleAdminLogin = async () => {
+}
+
 const handleLoginGuest = async () => {
   const guestEmail = "bharath@gmail.com"; // Replace with your actual guest email
   const guestPassword = "123456";       // Replace with your actual guest password
@@ -132,6 +135,13 @@ const handleLoginGuest = async () => {
           disabled={isLoading}
         >
           {isLoading ? "Logging in..." : "Login"}
+        </button>
+        
+        <button onClick={handleAdminLogin}
+        className="btn btn-dark btn-block w-100" 
+        disabled={isLoading}
+        >
+
         </button>
 
         <div className="mt-3 text-center">
