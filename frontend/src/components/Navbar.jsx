@@ -12,11 +12,11 @@ const CustomNavbar = () => {
   const userEmail = localStorage.getItem("userEmail");
   const username = userEmail ? userEmail.split('@')[0].toUpperCase() : '';
 
-  const handleSignIn = () => navigate('../Landpage/Adminoruser.jsx');
+  const handleSignIn = () => navigate('/login');
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userEmail");
-    navigate('/');
+    navigate('/login');
   };
   const handleProfile = () => navigate('/profile');
 

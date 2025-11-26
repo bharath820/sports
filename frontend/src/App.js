@@ -15,7 +15,7 @@ import Profile from "./pages/Profile.jsx";
 import Dashboard from "./pages/dashboard.jsx"
 import Grounddetails from "./pages/grounddetails.jsx"
 import BookingForm from "./pages/form.jsx"
-import Loggins from './Landpage/Adminoruser.jsx'
+import Logins from './Landpage/Login.jsx';
 
 
 
@@ -28,6 +28,7 @@ const Layout = () => {
 
   return (
     <>
+
       {!shouldHideLayout && <Navbar />}
       <Routes>
         <Route path="/" element={<div className="pt-5"><Home /></div>} />
@@ -41,7 +42,7 @@ const Layout = () => {
          <Route path="/dashboard" element={<Dashboard />} />
          <Route path="/ground/:id" element={<Grounddetails />} />
          <Route path="/form" element={<BookingForm />}/>
-         <Route path="/" element={<Loggins />} />
+         <Route path="/login" element={<Logins />} />
       </Routes>
       {!shouldHideLayout && <Footer />}
     </>

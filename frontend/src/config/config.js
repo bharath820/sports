@@ -1,2 +1,2 @@
-const Api_url=`https://sports-4-gz7h.onrender.com`;
+const Api_url=`http://localhost:3001`;
 export default Api_url;
