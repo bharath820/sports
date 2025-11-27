@@ -1,2 +1,2 @@
-const Api_url=`http://localhost:3001`;
+const Api_url=`https://sports-3-aei1.onrender.com`;
 export default Api_url;
